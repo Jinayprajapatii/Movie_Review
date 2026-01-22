@@ -2,21 +2,20 @@ import re
 import pickle
 import streamlit as st
 
+# -------------------- Page Config --------------------
 st.set_page_config(
     page_title="Movie Review Sentiment Analysis",
     layout="centered"
 )
 
-@st.cache_resource
-def load_artifacts():
-    with open("movie_sentiment_model.pkl", "rb") as f:
-        model = pickle.load(f)
-    with open("tfidf_vectorizer.pkl", "rb") as f:
-        vectorizer = pickle.load(f)
-    return model, vectorizer
+# -------------------- Load Model & Vectorizer (NO CACHE) --------------------
+with open("movie_sentiment_model.pkl", "rb") as f:
+    model = pickle.load(f)
 
-model, vectorizer = load_artifacts()
+with open("tfidf_vectorizer.pkl", "rb") as f:
+    vectorizer = pickle.load(f)
 
+# -------------------- Text Cleaning --------------------
 def clean_text(text):
     text = text.lower()
     text = re.sub(r"http\S+|www\S+", "", text)
@@ -24,7 +23,8 @@ def clean_text(text):
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
-st.title("Movie Review Sentiment Analysis By Jinay")
+# -------------------- UI --------------------
+st.title("Movie Review Sentiment Analysis")
 st.write(
     "This application predicts whether a movie review expresses "
     "a positive or negative sentiment using a trained machine learning model."
@@ -37,6 +37,7 @@ review_text = st.text_input(
     placeholder="Type or paste a movie review here..."
 )
 
+# -------------------- Prediction --------------------
 if st.button("Analyze Sentiment"):
     if review_text.strip() == "":
         st.error("Input text cannot be empty.")
@@ -47,7 +48,6 @@ if st.button("Analyze Sentiment"):
         pred_label = model.predict(vector)[0]
         prob = model.predict_proba(vector)[0]
 
-        # Explicit numeric label mapping
         negative_prob = prob[0] * 100
         positive_prob = prob[1] * 100
 
