@@ -4,7 +4,7 @@ import streamlit as st
 
 # -------------------- Page Config --------------------
 st.set_page_config(
-    page_title="Movie Review Sentiment Analysis",
+    page_title="Movie Review Sentiment Analysis By Jinay",
     layout="centered"
 )
 
@@ -24,7 +24,7 @@ def clean_text(text):
     return text
 
 # -------------------- UI --------------------
-st.title("Movie Review Sentiment Analysis")
+st.title("Movie Review Sentiment Analysis By Jinay")
 st.write(
     "This application predicts whether a movie review expresses "
     "a positive or negative sentiment using a trained machine learning model."
@@ -63,3 +63,4 @@ if st.button("Analyze Sentiment"):
                 f"Sentiment :- Negative\n\n"
                 f"Confidence: {negative_prob:.2f}%"
             )
+
